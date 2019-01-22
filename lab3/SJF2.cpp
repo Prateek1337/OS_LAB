@@ -1,34 +1,64 @@
 #include<bits/stdc++.h>
-#define f(i,a,b) for(int i=a;i<b;++i)
-
 using namespace std;
+
 bool runed[100];
-int findminburst(int i,int n,pair<int,int> >  arrivalBurstpid[])
+int findminburst(int completion_time,int n,pair< int,pair<int,int> >  arrivalBurstpid[])
 {
-	int min_j,min_burst;
+	int min_j=-1,min_burst=INT_MAX;
 	for(int k=1;k<=n;++k)
 	{
-		if(runed[k]==false&&arrivalBurstpid[k].first<=arrivalBurstpid)
+		if(runed[k]==false&&arrivalBurstpid[k].first<=completion_time&&arrivalBurstpid[k].second.first<min_burst)
+		{
+			min_burst=arrivalBurstpid[k].second.first;
+			min_j=arrivalBurstpid[k].second.second;
+		}
 	}
+	// printf("min_j=%d\n",min_j);
+	runed[min_j]=true;
+	return min_j;
 }
 
-void printall(int n, pair<int ,pair<int,int> >  arrivalBurstpid[];)
+int min_arrival(int n,pair< int,pair<int,int> >   arrivalBurstpid[])
 {
-	sort(arrivalBurstpid+1,arrivalBurst+n+1);
-	int wait[n],completion[n],wait1[n];
-	completion[0] = 0;
-	int tat[n];
-	tat[0]=arrivalBurst[0].second;
+	int min_j=-1,minarrival=INT_MAX;
+	for(int k=1;k<=n;++k)
+	{
+		if(runed[k]==false&&arrivalBurstpid[k].first<minarrival)
+		{
+			minarrival=arrivalBurstpid[k].first;
+			min_j=arrivalBurstpid[k].first;
+		}
+	}
+	return min_j;
+}
+
+void printall(int n, pair<int ,pair<int,int> >  arrivalBurstpid[])
+{
+	sort(arrivalBurstpid+1,arrivalBurstpid+n+1);
+	int wait[n+1],completion[n+1];
+	int current_time=0;
+	int tat[n+1];
 	float twt=0,ttat=0;
-	f(i,1,n+1)
+	int i=0;
+	while(i!=n)
 	{	
-		int j=findminburst(i,n,arrivalBurstpid)
-		if(arrivalBurst[i].first>completion[i-1])
-			completion[i]+=arrivalBurst[i].first-completion[i-1];
-		tat[i] = completion[i]-arrivalBurst[i].first;
-		wait1[i] = tat[i]-arrivalBurst[i].second;
-		ttat += tat[i];
-		twt += wait1[i];
+		int j=findminburst(current_time,n,arrivalBurstpid);
+		if(j!=-1)
+		{
+			// printf("j=%d\n",j);
+			completion[j]=current_time+arrivalBurstpid[j].second.first;
+			tat[j] = completion[j]-arrivalBurstpid[j].first;
+			wait[j] = tat[j]-arrivalBurstpid[j].second.first;
+			ttat += tat[j];
+			twt += wait[j];
+			current_time=completion[j];
+			i++;
+		}
+		else
+		{
+			j=min_arrival(n,arrivalBurstpid);
+			current_time=arrivalBurstpid[j].first;
+		}
 
 	}
 	ttat =(float)ttat/n;
@@ -37,9 +67,9 @@ void printall(int n, pair<int ,pair<int,int> >  arrivalBurstpid[];)
 	
 	for(int i=1;i<=n;++i)
 	{
-		if(arrivalBurst[i].first>completion[i-1])
+		if(arrivalBurstpid[i].first>completion[i-1])
 			printf("ideal\n");
-			cout<<i<<"\t\t"<<arrivalBurst[i].first<<"\t\t"<<arrivalBurst[i].second<<"\t\t"<<completion[i]<<"\t\t\t"<<tat[i]<<"\t\t\t"<<wait1[i]<<"\n";
+			cout<<i<<"\t\t"<<arrivalBurstpid[i].first<<"\t\t"<<arrivalBurstpid[i].second.first<<"\t\t"<<completion[i]<<"\t\t\t"<<tat[i]<<"\t\t\t"<<wait[i]<<"\n";
 	}
 	cout<<"average waiting time is:"<<twt<<"\n average turn around time is:"<<ttat<<"\n";
 }
@@ -60,9 +90,9 @@ int main()
 	for(int i=1;i<=n;++i)
 	{
 		cin>>arrival>>burst;
-		arrivalBurst[i].first = arrival;
-		arrivalBurst[i].second.first = burst;
-		arrivalBurst[i].second.second=i;
+		arrivalBurstpid[i].first = arrival;
+		arrivalBurstpid[i].second.first = burst;
+		arrivalBurstpid[i].second.second=i;
 	}
 	printall(n,arrivalBurstpid);
 }
