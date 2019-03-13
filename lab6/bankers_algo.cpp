@@ -41,47 +41,62 @@ void safe_sequence(int n,int m){
 			if(j==m){
 				safe[k++]=i;
 				finish[i]=true;
-				cout<<"i="<<i<<endl;
+				// cout<<"i="<<i<<endl;
 				for(j=0;j<m;++j){
-					cout<<need[i][j]<<" "<<work[j]<<endl;
+					// cout<<need[i][j]<<" "<<work[j]<<endl;
 					work[j]+=alloc[i][j];
 				}
-				cout<<endl;
+				// cout<<endl;
 			}
 		}
 		maxr_itr--;
 		i++;
 		i=i%n;
 	}
+	cout<<"safe sequence:";
 	for(int i=0;i<n;++i)
 		cout<<safe[i]<<" ";
 	cout<<endl;
 }
 
-void handle_request(int n,m){
+void handle_request(int n,int m){
 
-	for(int i=0;i<n;++i){
+	while(true){
+		printf("Enter process number \n");
+		int i;
+		cin>>i;
+		printf("Enter process request\n");
 		for(int j=0;j<m;++j){
-			if(request[i][j]>need[i][j]){
-				break;
+			cin>>request[i][j];
+		}
+		int j;
+			for(j=0;j<m;++j){
+				if(request[i][j]>need[i][j]){
+					break;
+				}
 			}
 			if(j!=m){
-				printf("he process has exceeded its"
-					"maximum claim.");
+				printf("the process has exceeded its"
+					"maximum claim.\n");
 				continue;
 			}
-			for(int j=0;j<m;++j){
-			if(request[i][j]>avail[i][j]){
-				break;
+			
+			for(j=0;j<m;++j){
+				if(request[i][j]>avail[j]){
+					break;
+				}
 			}
-			if(j==m){
-				printf("he process has exceeded its"
-					"maximum claim.");
+			if(j!=m){
+				printf("the process cannot be allocaed memory now.\n");
+				continue;
 			}
-		}
-
+			printf("the process has allocated memory\n");
+			for(j=0;j<m;++j){
+				avail[j]=avail[j]-request[i][j];
+				alloc[i][j]+=request[i][j];
+				need[i][j]-=request[i][j];
+			}
 	}
-
 }
 
 
@@ -103,17 +118,11 @@ int main(){
 	// 	for(int j=0;j<m;++j)
 	// 		cin>>alloc[i][j];
 	// }
-	for(int i=0;i<n;++i){
-		for(int j=0;j<m;++j)
-			need[i][j]=maxr[i][j]-alloc[i][j];
-	}
+	// for(int i=0;i<n;++i){
+	// 	for(int j=0;j<m;++j)
+	// 		need[i][j]=maxr[i][j]-alloc[i][j];
+	// }
 	safe_sequence(n,m);
-
-	for(int i=0;i<n;++i){
-		printf("Enter request resources  for process %d\n",i);
-		for(int j=0;j<m;++j)
-			cin>>request[i][j];
-	}
 
 	handle_request(n,m);
 
