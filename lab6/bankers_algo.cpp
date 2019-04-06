@@ -118,10 +118,10 @@ int main(){
 	// 	for(int j=0;j<m;++j)
 	// 		cin>>alloc[i][j];
 	// }
-	// for(int i=0;i<n;++i){
-	// 	for(int j=0;j<m;++j)
-	// 		need[i][j]=maxr[i][j]-alloc[i][j];
-	// }
+	for(int i=0;i<n;++i){
+		for(int j=0;j<m;++j)
+			need[i][j]=maxr[i][j]-alloc[i][j];
+	}
 	safe_sequence(n,m);
 
 	handle_request(n,m);

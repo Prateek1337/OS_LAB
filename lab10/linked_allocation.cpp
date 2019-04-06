@@ -31,7 +31,7 @@ void allocate(int id,int size){
 		}
 		++i;
 	}
-	printf("%d\n", i);
+	// printf("%d\n", i);
 	if(i>=num_blocks&&rem_size>0){
 		printf("Block cannot be allocated\n");
 		print_blocks();
@@ -42,8 +42,8 @@ void allocate(int id,int size){
 			if(blocks[idx]==0){
 				blocks[idx]=id;
 				size=size-block_size;
+				// printf("Block is being allocated %d %d\n",size,idx);
 			}
-			printf("Block is being allocated %d %d\n",size,idx);
 		}
 		printf("Block is allocated succesfully\n");
 		print_blocks();

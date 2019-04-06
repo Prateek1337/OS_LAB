@@ -41,7 +41,7 @@ void PS(int n,vector <pair<int, pair<int ,int> > > arrivalBurst)
 			tat[max_p_index]=completion[max_p_index]-arrivalBurst[max_p_index].first;
 			wait[max_p_index]=tat[max_p_index]-arrivalBurst[max_p_index].second.second;
 			ttat+=tat[max_p_index];
-			twt+=twt+tat[max_p_index];
+			twt+=wait[max_p_index];
 		}
 		else
 			t++;

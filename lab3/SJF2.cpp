@@ -7,7 +7,8 @@ int findminburst(int completion_time,int n,pair< int,pair<int,int> >  arrivalBur
 	int min_j=-1,min_burst=INT_MAX;
 	for(int k=1;k<=n;++k)
 	{
-		if(runed[k]==false&&arrivalBurstpid[k].first<=completion_time&&arrivalBurstpid[k].second.first<min_burst)
+		// cout<<min_j<<" ";
+		if(runed[arrivalBurstpid[k].second.second]==false&&arrivalBurstpid[k].first<=completion_time&&arrivalBurstpid[k].second.first<min_burst)
 		{
 			min_burst=arrivalBurstpid[k].second.first;
 			min_j=arrivalBurstpid[k].second.second;
@@ -23,18 +24,18 @@ int min_arrival(int n,pair< int,pair<int,int> >   arrivalBurstpid[])
 	int min_j=-1,minarrival=INT_MAX;
 	for(int k=1;k<=n;++k)
 	{
-		if(runed[k]==false&&arrivalBurstpid[k].first<minarrival)
+		if(runed[arrivalBurstpid[k].second.first]==false&&arrivalBurstpid[k].first<minarrival)
 		{
 			minarrival=arrivalBurstpid[k].first;
-			min_j=arrivalBurstpid[k].first;
+			min_j=arrivalBurstpid[k].second.first;
 		}
 	}
+	runed[min_j]=true;
 	return min_j;
 }
 
 void printall(int n, pair<int ,pair<int,int> >  arrivalBurstpid[])
 {
-	sort(arrivalBurstpid+1,arrivalBurstpid+n+1);
 	int wait[n+1],completion[n+1];
 	int current_time=0;
 	int tat[n+1];
@@ -43,6 +44,8 @@ void printall(int n, pair<int ,pair<int,int> >  arrivalBurstpid[])
 	while(i!=n)
 	{	
 		int j=findminburst(current_time,n,arrivalBurstpid);
+		cout<<j<<" ";
+		// cout<<runed[j]<<endl;
 		if(j!=-1)
 		{
 			// printf("j=%d\n",j);

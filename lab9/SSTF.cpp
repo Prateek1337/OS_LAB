@@ -28,8 +28,8 @@ void SSTF(int n){
 		int min_distance_idx=find_min(n);
 		isdone[min_distance_idx]=true;
 		count++;
+		td+=abs(head-request[min_distance_idx]);
 		head=request[min_distance_idx];
-		td+=request[min_distance_idx];
 		printf("%d\t\t\t%d\n",min_distance_idx,request[min_distance_idx]);
 	}
 	printf("Total distance moved by head=%d\n",td);
